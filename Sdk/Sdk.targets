@@ -1,0 +1,31 @@
+<!--
+***********************************************************************************************
+Sdk.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright Zero Games. All Rights Reserved.
+***********************************************************************************************
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="Sdk.targets" Sdk="ZeroGames.NET.Sdk" Version="1.0.0" />
+  
+  <Target Name="CheckRequiredProperties" BeforeTargets="PreBuildEvent">
+    <Error Condition=" '$(ZSharpProjectName)' == '.' " Text="ZSharpProjectName must set by project!" />
+    <Error Condition=" '$(ZSharpPluginDir)' == '.' " Text="ZSharpPluginDir must set by project!" />
+    <Error Condition=" '$(UnrealProjectDir)' == '.' " Text="UnrealProjectDir must set by project!" />
+    <Error Condition=" '$(ZSharpProjectSourceDir)' == '.' " Text="ZSharpProjectSourceDir must set by project!" />
+  </Target>
+
+  <!-- Copy output to Unreal Engine binaries directory. -->
+  <Target Name="CopyOutputs" AfterTargets="PostBuildEvent" Condition=" '$(IsRoslynComponent)' != 'true' ">
+    <Message Text="Copy output from $(TargetPath) to $(UnrealProjectDir)/Binaries/Managed/$(ZSharpOutputSubpath)." />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(UnrealProjectDir)/Binaries/Managed/$(ZSharpOutputSubpath)" />
+    <Message Text="Copy output from $(TargetPath) to $(ZSharpPluginDir)/Precompiled/$(ZSharpOutputSubpath)." Condition=" '$(ZSharpCopyToPrecompiledDir)' == 'true' " />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ZSharpPluginDir)/Precompiled/$(ZSharpOutputSubpath)" Condition=" '$(ZSharpCopyToPrecompiledDir)' == 'true' " />
+  </Target>
+
+</Project>

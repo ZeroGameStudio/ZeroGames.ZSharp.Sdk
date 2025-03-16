@@ -1,0 +1,73 @@
+<!--
+***********************************************************************************************
+Sdk.props
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright Zero Games. All Rights Reserved.
+***********************************************************************************************
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="Sdk.props" Sdk="ZeroGames.NET.Sdk" Version="1.0.0" />
+  
+  <!-- Override .NET Properties. -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- Change build configurations to match Unreal Engine specification. -->
+    <Configurations>DebugGame;Development;Shipping</Configurations>
+  </PropertyGroup>
+  
+  <!-- Z# Properties. -->
+  <PropertyGroup>
+    <UnrealProjectDir>.</UnrealProjectDir>
+    <ZSharpPluginDir>.</ZSharpPluginDir>
+    <ZSharpProjectSourceDir>.</ZSharpProjectSourceDir>
+    <ZSharpProjectName>.</ZSharpProjectName>
+    <MinimalImplicitUsings>enable</MinimalImplicitUsings>
+    <ZSharpCopyToPrecompiledDir>false</ZSharpCopyToPrecompiledDir>
+    <ZSharpOutputSubpath>/</ZSharpOutputSubpath>
+  </PropertyGroup>
+  
+  <!-- Set up build configurations. -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugGame' ">
+    <Optimize>false</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG;UE_LOG;ASSERTION_CHECK;ASSERTION_CHECK_SLOW</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Development' ">
+    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG;UE_LOG;ASSERTION_CHECK</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Shipping' ">
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;RELEASE</DefineConstants>
+  </PropertyGroup>
+  
+  <!-- Usually, you don't want to use .NET IO and async libraries, so we only import the minimal part. -->
+  <ItemGroup Condition=" '$(MinimalImplicitUsings)' == 'enable' Or '$(MinimalImplicitUsings)' == 'true' ">
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Linq" />
+  </ItemGroup>
+
+  <!-- Project contents. -->
+  <ItemGroup>
+    <Content Include="$(ZSharpProjectSourceDir)/$(ZSharpProjectName).zsproj">
+      <Link>$(ZSharpProjectName).zsproj</Link>
+    </Content>
+    <Compile Include="$(ZSharpProjectSourceDir)/**/*.cs" />
+    <Compile Include="$(UnrealProjectDir)/Intermediate/ZSharp/Glue/$(ZSharpProjectName)/**/*.cs" Condition=" Exists('$(UnrealProjectDir)/Intermediate/ZSharp/Glue/$(ZSharpProjectName)') " />
+    <AdditionalFiles Include="$(ZSharpProjectSourceDir)/AnalyzerReleases.Shipped.md" Condition=" Exists('$(ZSharpProjectSourceDir)/AnalyzerReleases.Shipped.md') " />
+    <AdditionalFiles Include="$(ZSharpProjectSourceDir)/AnalyzerReleases.Unshipped.md" Condition=" Exists('$(ZSharpProjectSourceDir)/AnalyzerReleases.Unshipped.md') " />
+  </ItemGroup>
+
+</Project>
