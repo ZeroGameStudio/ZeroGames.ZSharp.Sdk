@@ -64,8 +64,6 @@ Copyright Zero Games. All Rights Reserved.
     <Content Include="$(ZSharpProjectSourceDir)/$(ZSharpProjectName).zsproj">
       <Link>$(ZSharpProjectName).zsproj</Link>
     </Content>
-    <Compile Include="$(ZSharpProjectSourceDir)/**/*.cs" />
-    <Compile Include="$(UnrealProjectDir)/Intermediate/ZSharp/Glue/$(ZSharpProjectName)/**/*.cs" Condition=" Exists('$(UnrealProjectDir)/Intermediate/ZSharp/Glue/$(ZSharpProjectName)') " />
     <AdditionalFiles Include="$(ZSharpProjectSourceDir)/AnalyzerReleases.Shipped.md" Condition=" Exists('$(ZSharpProjectSourceDir)/AnalyzerReleases.Shipped.md') " />
     <AdditionalFiles Include="$(ZSharpProjectSourceDir)/AnalyzerReleases.Unshipped.md" Condition=" Exists('$(ZSharpProjectSourceDir)/AnalyzerReleases.Unshipped.md') " />
   </ItemGroup>

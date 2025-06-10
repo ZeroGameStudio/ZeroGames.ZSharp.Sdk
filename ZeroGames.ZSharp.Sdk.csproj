@@ -5,7 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>ZeroGames.ZSharp.Sdk</PackageId>
     <PackageType>MSBuildSdk</PackageType>
-    <PackageVersion>1.0.0-beta.3</PackageVersion>
+    <PackageVersion>1.0.0-beta.6</PackageVersion>
     <Authors>Lin7Han</Authors>
     <Description>Common configurations for Z# projects.</Description>
     <Copyright>Copyright Zero Games. All Rights Reserved.</Copyright>
